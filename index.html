@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>追梦 - 我的世界官方服务器</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+:root {
+  --mc-blue: #299dff;
+  --mc-purple: #8a2be2;
+  --mc-dark: #0f1729;
+  --mc-card: rgba(20, 30, 50, 0.7);
+  --mc-glow: 0 0 20px rgba(41, 157, 255, 0.3);
+  --mc-qq: #12b7f5;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: #0b101f;
+  background-image: linear-gradient(135deg, rgba(41, 157, 255, 0.2), rgba(138, 43, 226, 0.2)), url("https://p.qqan.com/up/2024-11/17315686025214884.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  position: relative;
+  z-index: 1;
+}
+.hero {
+  text-align: center;
+  padding: 70px 0 50px;
+  animation: fadeInDown 1s ease-out;
+}
+.hero h1 {
+  font-size: 52px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #29d1ff, #4e94ff, #8a2be2);
+  -webkit-background-clip: text;
+  color: transparent;
+  margin-bottom: 12px;
+  text-shadow: var(--mc-glow);
+  animation: gradient-shift 8s ease infinite, fadeInDown 1s ease-out 0.2s both;
+  background-size: 200% 200%;
+}
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.hero p {
+  font-size: 18px;
+  color: #c0d6ff;
+  opacity: 0.9;
+  animation: fadeInUp 1s ease-out 0.4s both;
+}
+.nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 40px;
+  animation: fadeInUp 1s ease-out 0.6s both;
+}
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50px;
+  font-size: 15px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+}
+.nav a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.nav a:hover::before {
+  left: 100%;
+}
+.nav a:hover {
+  background: linear-gradient(90deg, var(--mc-blue), var(--mc-purple));
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(41, 157, 255, 0.3);
+}
+.card {
+  background: var(--mc-card);
+  border-radius: 18px;
+  padding: 30px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0;
+  transform: translateY(30px);
+}
+.card.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 50px rgba(41, 157, 255, 0.25);
+}
+.card h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #29d1ff, #4e94ff);
+  -webkit-background-clip: text;
+  color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.card p {
+  line-height: 1.8;
+  color: #e6f0ff;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+.server-ip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  flex-wrap: wrap;
+}
+.server-ip .ip-text {
+  background: rgba(255,255,255,0.08);
+  padding: 12px 20px;
+  border-radius: 12px;
+  flex: 1;
+  min-width: 200px;
+  font-size: 16px;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+.server-ip .ip-text:focus-within {
+  background: rgba(255,255,255,0.12);
+  box-shadow: 0 0 0 2px rgba(41, 157, 255, 0.3);
+}
+.btn {
+  padding: 12px 22px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.btn:hover::before {
+  left: 100%;
+}
+.btn:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 10px 25px rgba(41, 157, 255, 0.4);
+}
+.btn:active {
+  transform: scale(0.98) translateY(0);
+}
+.copy-btn {
+  background: linear-gradient(90deg, var(--mc-blue), var(--mc-purple));
+  color: #fff;
+}
+.qq-btn {
+  background: linear-gradient(90deg, var(--mc-qq), #0ba4e0);
+  color: #fff;
+  margin-top: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.qq-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.qq-group .qnum {
+  background: rgba(18, 183, 245, 0.15);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(18, 183, 245, 0.3);
+}
+.rule-item {
+  background: rgba(255,255,255,0.05);
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+.rule-item:hover {
+  background: rgba(41, 157, 255, 0.15);
+  transform: translateX(8px);
+  box-shadow: 0 4px 12px rgba(41, 157, 255, 0.1);
+}
+.footer {
+  text-align: center;
+  padding: 40px 0;
+  color: #7a90c0;
+  font-size: 14px;
+  animation: fadeInUp 1s ease-out 1s both;
+}
+/* 适配手机小屏 */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 36px;
+  }
+  .card {
+    padding: 20px;
+  }
+  .btn {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+<div id="particles"></div>
+<div class="container">
+  <div class="hero">
+    <h1>追梦服务器</h1>
+    <p>因热爱相遇 · 为梦想前行 · 我的世界纯净生存服</p>
+  </div>
+
+  <div class="nav">
+    <a href="#home">首页</a>
+    <a href="#info">服务器信息</a>
+    <a href="#feature">特色玩法</a>
+    <a href="#rule">游戏规则</a>
+    <a href="#about">关于我们</a>
+  </div>
+
+  <div class="card" id="info">
+    <h2>📌 服务器信息</h2>
+    <p><strong>服务器名称：</strong>追梦服务器</p>
+    <p><strong>版本：</strong>网易我的世界3.7</p>
+    <p><strong>服务器模式：</strong>纯净生存 | 经济 | 养老</p>
+    <p><strong>运行状态：</strong><span style="color:#00ff80">✅ 正常在线 · 长期稳定</span></p>
+
+    <div class="server-ip">
+      <div class="ip-text">94785696</div>
+      <button class="btn copy-btn" onclick="copyIP()">复制服务器号</button>
+    </div>
+
+    <!-- 新增QQ群功能 -->
+    <div class="qq-group">
+      <p><strong>官方交流群：</strong></p>
+      <div class="qnum">904301534</div>
+    </div>
+    <a href="https://qm.qq.com/q/Q79DICLZi8" target="_blank" class="btn qq-btn">
+      👉🏻 点击加入QQ群
+    </a>
+  </div>
+
+  <div class="card" id="feature">
+    <h2>🎯 服务器特色</h2>
+    <p>• 无权限滥用，公平公正，纯公益运营</p>
+    <p>• 纯净生存，保留原汁原味MC体验</p>
+    <p>• 经济商店、宠物、社交系统齐全</p>
+    <p>• 长期稳定开服，不跑路，适合养老玩家</p>
+    <p>• 萌新友好，管理在线，随时解答问题</p>
+  </div>
+
+  <div class="card" id="rule">
+    <h2>📜 服务器规则</h2>
+    <div class="rule-item">禁止破坏、偷窃、熊孩子行为</div>
+    <div class="rule-item">禁止外挂、矿透、作弊、利用BUG</div>
+    <div class="rule-item">禁止刷屏、辱骂、广告、引战</div>
+    <div class="rule-item">文明游戏，互相尊重，友善交流</div>
+    <div class="rule-item">违规将视情况禁言/封禁，不接受无理辩解</div>
+  </div>
+
+  <div class="card" id="about">
+    <h2>🌌 关于追梦</h2>
+    <p>我们是一群热爱我的世界的玩家，致力于打造一个干净、公平、温暖的方块世界。</p>
+    <p>在这里，你可以安心建造、自由探索、结交伙伴，一起创造属于你的故事。</p>
+    <br>
+    <p style="background: linear-gradient(90deg, var(--mc-blue), var(--mc-purple)); -webkit-background-clip: text; color: transparent; font-weight:600;">追梦服务器 · 欢迎每一位热爱MC的你回家</p>
+  </div>
+
+  <div class="footer">
+    © 2026 追梦服务器 | Minecraft服务器
+  </div>
+</div>
+
+<script>
+// 炫酷粒子背景
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
+const particles = [];
+const particleCount = 80;
+
+document.getElementById('particles').appendChild(canvas);
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 3 + 1;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+    this.color = `rgba(${Math.floor(Math.random()*100+155)}, ${Math.floor(Math.random()*100+100)}, ${Math.floor(Math.random()*55+200)}, ${Math.random()*0.5+0.3})`;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x > canvas.width) this.x = 0;
+    if (this.x < 0) this.x = canvas.width;
+    if (this.y > canvas.height) this.y = 0;
+    if (this.y < 0) this.y = canvas.height;
+  }
+  draw() {
+    ctx.fillStyle = this.color;
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function init() {
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    particles[i].draw();
+  }
+  requestAnimationFrame(animate);
+}
+
+init();
+animate();
+
+// 复制IP功能
+function copyIP() {
+  const ip = "mc.zhuimeng.cc";
+  navigator.clipboard.writeText(ip).then(() => {
+    alert("✅ 复制成功！\n服务器IP：" + ip + "\n请在游戏内粘贴加入！");
+  });
+}
+
+// 滚动动画：卡片入场
+const cards = document.querySelectorAll('.card');
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+cards.forEach(card => {
+  observer.observe(card);
+});
+</script>
+</body>
+</html>
